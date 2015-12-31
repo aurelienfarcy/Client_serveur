@@ -5,9 +5,14 @@
 
 var express = require('express');
 var router = express.Router();
+var db = require('../../model/db_Interface.js');
 
-router.get('/', function(req, res, next) {
-    res.send('addDevice');
+/* Add device */
+router.post('/', function (req, res) {
+    var device = req.body.device;
+    console.log("Group name = " + device);
+    db.registerDevice(device);
+    console.log("base de donne Sucess");
 });
 
 module.exports = router;

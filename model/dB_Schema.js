@@ -3,47 +3,43 @@
  */
 'use strict';
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/db');
 var Schema = mongoose.Schema;
-
-
-
-//Test the connection of the DB
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    // we're connected!
-});
-
-
 
 //DB Schema
 
-var userSchema = new Schema ({
+var userSchema = Schema ({
     login : {type : String, required : true},
     password : {type : String, required : true}
 });
 
-var groupSchema = new Schema ({
-    name : {type : String,required :true},
-    groupID : {type : Number, required : true}
+var groupSchema = Schema ({
+    name : {type : String,required :true}
+    // groupID : {}
 });
 
-var deviceSchema = new Schema ({
-    name : {type : String , required : true},
-    deviceID : {type : Number, required : true}
+var deviceSchema = Schema ({
+    name_device : {type : String , required : true}
+
+    //deviceID : {}
 });
 
+
+//model creation
+//var User = mongoose.model('User', userSchema);
 
 //compile modele
 module.exports = {
+    disconnect: function() {
+        mongoose.disconnect();
+    },
     user: function() {
-        return mongoose.model(User,userSchema);
+        return mongoose.model('User',userSchema);
     },
     group: function(){
-        return mongoose.model(Group,groupSchema);
+        return mongoose.model('Group',groupSchema);
     },
     device: function(){
-        return mongoose.model(Device,deviceSchema);
+        return mongoose.model('Device',deviceSchema);
     }
 };

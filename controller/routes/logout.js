@@ -3,10 +3,12 @@
  */
 'use strict';
 
+
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-    res.send('logout');
+router.post('/',function(req,res){
+    res.render("Removepage.jade");
 });
+
 module.exports = router;

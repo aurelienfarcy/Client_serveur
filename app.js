@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 var dbConnect
 
-MongoClient.connect("mongodb://localhost:27017/mydb", function(err, db){
+MongoClient.connect("mongodb://localhost:27017/db", function(err, db){
   dbConnect = db;
 });
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -43,12 +43,6 @@ var activate = require ('./controller/routes/activate');
 var desactivate = require ('./controller/routes/desactivate');
 
 var app = express();
-
-//vire la sécurité header
-app.use(cors({
-  allowedOrigins:['*']
-}))
-
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -57,14 +51,47 @@ var allowCrossDomain = function(req, res, next) {
   next();
 }
 
+//vire la sécurité header
+app.use(cors({
+  allowedOrigins:['*']
+
+}))
+
+app.use(function(req, res, next) {
+  var oneof = false;
+  if(req.headers.origin) {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    oneof = true;
+  }
+  if(req.headers['access-control-request-method']) {
+    res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
+    oneof = true;
+  }
+  if(req.headers['access-control-request-headers']) {
+    res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
+    oneof = true;
+  }
+  if(oneof) {
+    res.header('Access-Control-Max-Age', 60 * 60 * 24 * 365);
+  }
+
+  // intercept OPTIONS method
+  if (oneof && req.method == 'OPTIONS') {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+});
+
+
+
 //Second
 // view engine setup
 //Locate all Jade files into directory views
 // All viewn off MVC are script into Jade templates
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -102,8 +129,6 @@ function handle_errors(req, res, next) {
 // error handlers
 // catch 404 and forward to error handler
 app.use(handle_errors);
-
-
 
 // development error handler
 // will print stacktrace

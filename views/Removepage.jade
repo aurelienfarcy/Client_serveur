@@ -1,10 +1,10 @@
-
+//
+   Created by Aurelien on 31/12/2015.
 
 doctype html
 html(lang="en")
    head
-      title= register
-
+      title= RemovePage
       script(src="http://code.jquery.com/jquery-1.7.2.min.js")
       script(type='text/javascript').
          $(document).ready(function () {
@@ -12,55 +12,45 @@ html(lang="en")
             $("#submit").click(function () {
                user = $("#user").val();
                pass = $("#password").val();
-               $.post("http://localhost:3000/register", {user: user, password: pass}, function (data) {
+               $.post("http://localhost:3000/remove", {user: user, password: pass}, function (data) {
                   alert("je suis la" + data);
-
                });
             });
          });
-
    script(type='text/javascript').
       $(document).ready(function () {
          var group;
          $("#submit1").click(function () {
             group = $("#group").val();
-            $.post("http://localhost:3000/createGroup", {group : group}, function (data) {
+            $.post("http://localhost:3000/removeGroup", {group: group}, function (data) {
                alert("group " + data);
             });
          });
       });
-
-
    script(type='text/javascript').
-              $(document).ready(function () {
-                 var device;
-                 $("#submit2").click(function () {
-                    device = $("#device").val();
-                    $.post("http://localhost:3000/addDevice", {device: device}, function (data) {
-                       alert("device " + data);
-                    });
-                 });
-              });
-
-
-
-
+      $(document).ready(function () {
+         var device;
+         $("#submit2").click(function () {
+            device = $("#device").val();
+            $.post("http://localhost:3000/removeDevice", {device: device}, function (data) {
+               alert("device " + data);
+            });
+         });
+      });
    body
-      h1 Register User
+      h1 Remove User
       input(type="TEXT" id="user" size="40")
       br
       input(type="password" id="password" size="40")
       br
       input(type="button" id="submit" value="Submit")
       br
-      h1 Register Group
+      h1 Remove Group
       input(type="TEXT" id="group" size="40")
       br
       input(type="button" id="submit1" value="Submit")
       br
-      h1 Register Device
+      h1 Remove Device
       input(type="TEXT" id="device" size="40")
       br
       input(type="button" id="submit2" value="Submit")
-
-

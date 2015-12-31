@@ -3,8 +3,8 @@
  */
 'use strict';
 
-var db = require ('./dB_Interface.js');
-
+var db = require ('./dB_Schema.js');
+var UserDB= db.user();
 
 var user = {
     registerUser : function(login, password){
@@ -12,10 +12,18 @@ var user = {
             login : login,
             password : password
         });
-        user.save (function (err,doc ) {
-            done(err,doc);
+        user.save (function (err) {
+            if (err) { throw err; }
+            console.log('Sucess user registered !');
         })
+    },
+
+    removeUser: function(email, done) {
+        UserDB.findOneAndRemove({login : login, password : password}, function(err) {
+            done(err);
+        });
     }
 };
+
 
 module.exports = user;

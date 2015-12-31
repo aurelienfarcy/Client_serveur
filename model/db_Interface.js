@@ -4,9 +4,16 @@
 'use strict'
 
 var dbUser =  require('./user.js');
+var dbGroup = require('./group.js');
+var dbDevice = require('./device.js');
 
 var db = {
-    registerUser : dbUser.registerUser
+    registerUser : dbUser.registerUser,
+    removeUser :   dbUser.removeUser,
+
+    registerGroup :dbGroup.registerGroup,
+
+    registerDevice :dbDevice.registerDevice
 };
 
 module.exports = db;
